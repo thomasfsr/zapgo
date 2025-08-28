@@ -5,7 +5,7 @@
 *.dylib
 *.rpm
 *.deb
-
+.env
 
 # Compiled binaries (e.g., from `go build`)
 */
