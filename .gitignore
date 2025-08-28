@@ -5,6 +5,12 @@
 *.dylib
 *.rpm
 *.deb
+*.db 
+*.duckdb
+*.sqlite3
+*.db3
+*.s3db
+*.sl3
 
 # Compiled binaries (e.g., from `go build`)
 */
