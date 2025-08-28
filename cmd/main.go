@@ -9,6 +9,7 @@ import (
 	"syscall"
 
 	"go.mau.fi/whatsmeow"
+	"go.mau.fi/whatsmeow/proto/waE2E"
 	"go.mau.fi/whatsmeow/store/sqlstore"
 	"go.mau.fi/whatsmeow/types/events"
 	waLog "go.mau.fi/whatsmeow/util/log"
@@ -17,10 +18,30 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func eventHandler(evt interface{}) {
-	switch v := evt.(type) {
-	case *events.Message:
-		fmt.Println("Received a message!", v.Message.GetConversation())
+func eventHandler(client *whatsmeow.Client) func(interface{}) {
+	return func(evt interface{}) {
+		switch v := evt.(type) {
+		case *events.Message:
+			message := v.Message.GetConversation()
+			sender := v.Info.Sender
+
+			fmt.Println("Received a message!", message)
+
+			if message != "" {
+				response := fmt.Sprintf("You said: %s", message)
+
+				// Use waProto.Message instead of waE2E.Message
+				_, err := client.SendMessage(context.Background(), sender, &waE2E.Message{
+					Conversation: &response,
+				})
+
+				if err != nil {
+					fmt.Printf("Error sending message: %v\n", err)
+				} else {
+					fmt.Println("Response sent successfully") // Added newline
+				}
+			}
+		}
 	}
 }
 
@@ -49,7 +70,7 @@ func main() {
 	}
 	clientLog := waLog.Stdout("Client", "DEBUG", true)
 	client := whatsmeow.NewClient(deviceStore, clientLog)
-	client.AddEventHandler(eventHandler)
+	client.AddEventHandler(eventHandler(client))
 
 	if client.Store.ID == nil {
 		// No ID stored, new login
