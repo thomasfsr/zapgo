@@ -28,11 +28,12 @@ func eventHandler(client *whatsmeow.Client) func(interface{}) {
 			fmt.Println("Received a message!", message)
 
 			if message != "" {
-				response := fmt.Sprintf("You said: %s", message)
+				// response := fmt.Sprintf("You said: %s", message)
+				res := call_llm(message)
 
-				// Use waProto.Message instead of waE2E.Message
+				fmt.Println(res)
 				_, err := client.SendMessage(context.Background(), sender, &waE2E.Message{
-					Conversation: &response,
+					Conversation: &res,
 				})
 
 				if err != nil {
