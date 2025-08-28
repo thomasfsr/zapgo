@@ -1,0 +1,38 @@
+# Binaries for various operating systems and architectures
+*.exe
+*.dll
+*.so
+*.dylib
+*.rpm
+*.deb
+
+# Compiled binaries (e.g., from `go build`)
+*/
+!*.go
+!*.mod
+!*.sum
+!*.s
+!*.c
+!*.h
+!*.json
+!*.yaml
+!*.toml
+!*.xml
+!*.txt
+!*.md
+
+# Test binaries
+*_test
+
+# Dependency management caches
+vendor/
+go.mod.bak
+go.sum.bak
+
+# IDE and editor specific files
+.idea/
+.vscode/
+*.swp
+*.bak
+*.tmp
+*.log
