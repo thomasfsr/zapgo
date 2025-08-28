@@ -29,7 +29,7 @@ func eventHandler(client *whatsmeow.Client) func(interface{}) {
 
 			if message != "" {
 				// response := fmt.Sprintf("You said: %s", message)
-				res := call_llm(message)
+				res, _ := callLLM(message)
 
 				fmt.Println(res)
 				_, err := client.SendMessage(context.Background(), sender, &waE2E.Message{
