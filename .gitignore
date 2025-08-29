@@ -9,7 +9,6 @@
 
 
 # Compiled binaries (e.g., from `go build`)
-*/
 !*.go
 !*.mod
 !*.sum
