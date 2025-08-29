@@ -5,7 +5,6 @@
 *.dylib
 *.rpm
 *.deb
-
 .env
 
 
