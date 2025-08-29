@@ -19,9 +19,9 @@ func callLLM(prompt string) (string, error) {
 	if apiKey == "" {
 		return "", fmt.Errorf("missing GROQ_API_KEY in .env")
 	}
-
+	model_name := "openai/gpt-oss-120b"
 	llm, err := openai.New(
-		openai.WithModel("llama3-8b-8192"),
+		openai.WithModel(model_name),
 		openai.WithBaseURL("https://api.groq.com/openai/v1"),
 		openai.WithToken(apiKey),
 	)
@@ -41,3 +41,9 @@ func callLLM(prompt string) (string, error) {
 
 	return resp, nil
 }
+
+// func callHttp(prompt string) string {
+// 	_ = godotenv.Load()
+// 	apiKey := os.Getenv("GROQ_API_KEY")
+// 	return prompt
+// }
