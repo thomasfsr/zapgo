@@ -32,10 +32,15 @@ func eventHandler(client *whatsmeow.Client) func(interface{}) {
 				// res, _ := callLLM(message)
 				// fmt.Println(res)
 
-				groq_res := callGroq(message)
+				groq_res, error1 := callGroq(message)
+
+				fmt.Print("\n", error1)
+
+				fmt.Println(groq_res)
+				groq_res_str := string(groq_res.Function.Arguments)
 
 				_, err := client.SendMessage(context.Background(), sender, &waE2E.Message{
-					Conversation: &groq_res,
+					Conversation: &groq_res_str,
 				})
 
 				if err != nil {
