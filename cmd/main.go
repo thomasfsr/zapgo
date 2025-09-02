@@ -11,6 +11,7 @@ import (
 	"go.mau.fi/whatsmeow"
 	"go.mau.fi/whatsmeow/proto/waE2E"
 	"go.mau.fi/whatsmeow/store/sqlstore"
+	"go.mau.fi/whatsmeow/types"
 	"go.mau.fi/whatsmeow/types/events"
 	waLog "go.mau.fi/whatsmeow/util/log"
 
@@ -28,18 +29,16 @@ func eventHandler(client *whatsmeow.Client) func(interface{}) {
 			fmt.Println("Received a message!", message)
 
 			if message != "" {
-				// response := fmt.Sprintf("You said: %s", message)
-				// res, _ := callLLM(message)
-				// fmt.Println(res)
-
-				groq_res, error1 := callGroq(message)
-
-				fmt.Print("\n", error1)
-
-				fmt.Println(groq_res)
+				groq_res, err1 := callGroq(message)
 				groq_res_str := string(groq_res.Function.Arguments)
+				if err1 != nil {
+					print(err1)
+				}
+				fmt.Println(groq_res)
 
-				_, err := client.SendMessage(context.Background(), sender, &waE2E.Message{
+				recipient := types.NewJID(sender.User, "s.whatsapp.net")
+
+				_, err := client.SendMessage(context.Background(), recipient, &waE2E.Message{
 					Conversation: &groq_res_str,
 				})
 
@@ -89,10 +88,10 @@ func main() {
 		}
 		for evt := range qrChan {
 			if evt.Event == "code" {
-				// Render the QR code here
-				// e.g. qrterminal.GenerateHalfBlock(evt.Code, qrterminal.L, os.Stdout)
-				// or just manually `echo 2@... | qrencode -t ansiutf8` in a terminal
 				fmt.Println("QR code:", evt.Code)
+			} else if evt.Event == "success" {
+				fmt.Println("Login successful, session saved")
+				break // stop waiting for QR, session persisted
 			} else {
 				fmt.Println("Login event:", evt.Event)
 			}

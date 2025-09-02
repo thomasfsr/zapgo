@@ -5,6 +5,7 @@ go 1.24.5
 require (
 	github.com/joho/godotenv v1.5.1
 	github.com/mattn/go-sqlite3 v1.14.32
+	github.com/openai/openai-go/v2 v2.2.0
 	github.com/tmc/langchaingo v0.1.7
 	go.mau.fi/whatsmeow v0.0.0-20250826144440-85e30ecab38b
 )
@@ -19,6 +20,10 @@ require (
 	github.com/petermattis/goid v0.0.0-20250813065127-a731cc31b4fe // indirect
 	github.com/pkoukk/tiktoken-go v0.1.6 // indirect
 	github.com/rs/zerolog v1.34.0 // indirect
+	github.com/tidwall/gjson v1.18.0 // indirect
+	github.com/tidwall/match v1.1.1 // indirect
+	github.com/tidwall/pretty v1.2.1 // indirect
+	github.com/tidwall/sjson v1.2.5 // indirect
 	go.mau.fi/libsignal v0.2.0 // indirect
 	go.mau.fi/util v0.9.0 // indirect
 	golang.org/x/crypto v0.41.0 // indirect
