@@ -184,7 +184,7 @@ func callGroq(input string) (ToolCall, error) {
 
 	// Create request body
 	requestBody := UpdateRequestBody{
-		Model: "llama-3.1-70b-versatile",
+		Model: "openai/gpt-oss-120b",
 		Messages: []Message{
 			{
 				Role:    "system",
@@ -224,7 +224,7 @@ func callGroq(input string) (ToolCall, error) {
 
 	fmt.Println("Request JSON:", string(jsonData))
 	// Create HTTP request
-	req, err := http.NewRequest("POST", "https://api.groq.com/openai/v1", bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("POST", "https://api.groq.com/openai/v1/chat/completions", bytes.NewBuffer(jsonData))
 	if err != nil {
 		return ToolCall{}, fmt.Errorf("error creating request: %v", err)
 	}
