@@ -11,7 +11,6 @@ import (
 	"go.mau.fi/whatsmeow"
 	"go.mau.fi/whatsmeow/proto/waE2E"
 	"go.mau.fi/whatsmeow/store/sqlstore"
-	"go.mau.fi/whatsmeow/types"
 	"go.mau.fi/whatsmeow/types/events"
 	waLog "go.mau.fi/whatsmeow/util/log"
 
@@ -23,30 +22,18 @@ func eventHandler(client *whatsmeow.Client) func(interface{}) {
 	return func(evt interface{}) {
 		switch v := evt.(type) {
 		case *events.Message:
-			message := v.Message.GetConversation()
 			sender := v.Info.Sender
+			fmt.Println("\nMensagem recebida de:\n", sender)
 
-			fmt.Println("Received a message!", message)
+			text := "helloworld"
+			_, err := client.SendMessage(context.Background(), sender, &waE2E.Message{
+				Conversation: &text,
+			})
 
-			if message != "" {
-				groq_res, err1 := callGroq(message)
-				groq_res_str := string(groq_res.Function.Arguments)
-				if err1 != nil {
-					print(err1)
-				}
-				fmt.Println(groq_res)
-
-				recipient := types.NewJID(sender.User, "s.whatsapp.net")
-
-				_, err := client.SendMessage(context.Background(), recipient, &waE2E.Message{
-					Conversation: &groq_res_str,
-				})
-
-				if err != nil {
-					fmt.Printf("Error sending message: %v\n", err)
-				} else {
-					fmt.Println("Response sent successfully") // Added newline
-				}
+			if err != nil {
+				fmt.Printf("Erro ao enviar: %v\n", err)
+			} else {
+				fmt.Println("Resposta enviada com sucesso")
 			}
 		}
 	}

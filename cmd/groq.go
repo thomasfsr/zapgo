@@ -225,6 +225,7 @@ func callGroq(input string) (ToolCall, error) {
 	fmt.Println("Request JSON:", string(jsonData))
 	// Create HTTP request
 	req, err := http.NewRequest("POST", "https://api.groq.com/openai/v1/chat/completions", bytes.NewBuffer(jsonData))
+	fmt.Print(req)
 	if err != nil {
 		return ToolCall{}, fmt.Errorf("error creating request: %v", err)
 	}
