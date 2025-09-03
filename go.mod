@@ -5,7 +5,7 @@ go 1.24.5
 require (
 	github.com/joho/godotenv v1.5.1
 	github.com/mattn/go-sqlite3 v1.14.32
-	github.com/openai/openai-go/v2 v2.2.0
+	github.com/openai/openai-go/v2 v2.2.2
 	github.com/tmc/langchaingo v0.1.7
 	go.mau.fi/whatsmeow v0.0.0-20250826144440-85e30ecab38b
 )

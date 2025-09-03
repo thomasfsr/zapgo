@@ -27,6 +27,8 @@ github.com/mattn/go-sqlite3 v1.14.32 h1:JD12Ag3oLy1zQA+BNn74xRgaBbdhbNIDYvQUEuuE
 github.com/mattn/go-sqlite3 v1.14.32/go.mod h1:Uh1q+B4BYcTPb+yiD3kU8Ct7aC0hY9fxUwlHK0RXw+Y=
 github.com/openai/openai-go/v2 v2.2.0 h1:5DpsQ5ksY2ciSY3paf3EpicECHi93fTkBhoYyF3HIJo=
 github.com/openai/openai-go/v2 v2.2.0/go.mod h1:sIUkR+Cu/PMUVkSKhkk742PRURkQOCFhiwJ7eRSBqmk=
+github.com/openai/openai-go/v2 v2.2.2 h1:nxOKipjlyrNaVY7nejORMQ8ttLbIEoyUgYII2tx5WjQ=
+github.com/openai/openai-go/v2 v2.2.2/go.mod h1:sIUkR+Cu/PMUVkSKhkk742PRURkQOCFhiwJ7eRSBqmk=
 github.com/petermattis/goid v0.0.0-20250813065127-a731cc31b4fe h1:vHpqOnPlnkba8iSxU4j/CvDSS9J4+F4473esQsYLGoE=
 github.com/petermattis/goid v0.0.0-20250813065127-a731cc31b4fe/go.mod h1:pxMtw7cyUw6B2bRH0ZBANSPg+AoSud1I1iyJHI69jH4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
