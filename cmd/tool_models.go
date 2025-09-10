@@ -27,32 +27,6 @@ type UpdateBaseModel struct {
 	Location    *string        `json:"location,omitempty"`
 }
 
-type UpdateRequestBody struct {
-	Model               string      `json:"model"`
-	Messages            []Message   `json:"messages"`
-	MaxCompletionTokens int         `json:"max_completion_tokens"`
-	Temperature         float32     `json:"temperature"`
-	Tools               []Tool      `json:"tools,omitempty"`
-	ToolChoice          interface{} `json:"tool_choice,omitempty"`
-}
-
-type FunctionDefinition struct {
-	Name        string      `json:"name"`
-	Description string      `json:"description"`
-	Parameters  interface{} `json:"parameters"`
-}
-
-type Tool struct {
-	Type     string             `json:"type"`
-	Function FunctionDefinition `json:"function"`
-}
-
-type UpdateFunctionParameters struct {
-	Type       string                 `json:"type"`
-	Properties map[string]interface{} `json:"properties"`
-	Required   []string               `json:"required"`
-}
-
 var updateFunctionSchema = map[string]interface{}{
 	"type": "object",
 	"properties": map[string]interface{}{
