@@ -39,14 +39,12 @@ o Schema dos dados segue:
     new_item_name: Optional[str] | None 
     category: [str = Field(description='Category of the item') `
 
-func callGroq(input string) (ToolCall, error) {
-	fmt.Print("\nolá1\n")
-	fmt.Println("\nOla2")
+func callGroq(input string) (ToolCallResponse, error) {
 	// Get API key from environment variable
 	apiKey := os.Getenv("GROQ_API_KEY")
 	if apiKey == "" {
 		fmt.Println("GROQ_API_KEY environment variable not set")
-		return ToolCall{}, fmt.Errorf("API not set")
+		return ToolCallResponse{}, fmt.Errorf("API not set")
 	}
 
 	// Create request body
@@ -84,17 +82,14 @@ func callGroq(input string) (ToolCall, error) {
 
 	// Marshal request body to JSON
 	jsonData, err := json.Marshal(requestBody)
-	fmt.Println(jsonData)
 	if err != nil {
-		return ToolCall{}, fmt.Errorf("error marshaling JSON: %v", err)
+		return ToolCallResponse{}, fmt.Errorf("error marshaling JSON: %v", err)
 	}
 
-	fmt.Println("Request JSON:", string(jsonData))
-	// Create HTTP request
 	req, err := http.NewRequest("POST", "https://api.groq.com/openai/v1/chat/completions", bytes.NewBuffer(jsonData))
 	fmt.Print(req)
 	if err != nil {
-		return ToolCall{}, fmt.Errorf("error creating request: %v", err)
+		return ToolCallResponse{}, fmt.Errorf("error creating request: %v", err)
 	}
 
 	// Set headers
@@ -106,7 +101,7 @@ func callGroq(input string) (ToolCall, error) {
 	resp, err := client.Do(req)
 	if err != nil {
 		fmt.Printf("Error making request: %v\n", err)
-		return ToolCall{}, fmt.Errorf("fail to get API key")
+		return ToolCallResponse{}, fmt.Errorf("fail to get API key")
 	}
 	defer resp.Body.Close()
 
@@ -114,31 +109,31 @@ func callGroq(input string) (ToolCall, error) {
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Printf("Error reading response: %v\n", err)
-		return ToolCall{}, fmt.Errorf("fail to get API key")
+		return ToolCallResponse{}, fmt.Errorf("fail to get API key")
 	}
 
 	// Check status code
 	if resp.StatusCode != http.StatusOK {
 		fmt.Printf("Error: %s\n", resp.Status)
 		fmt.Printf("Response: %s\n", string(body))
-		return ToolCall{}, fmt.Errorf("fail to get API key")
+		return ToolCallResponse{}, fmt.Errorf("fail to get API key")
 	}
 
 	// Parse response
 	var response ResponseBody
 	err = json.Unmarshal(body, &response)
 	if err != nil {
-		return ToolCall{}, fmt.Errorf("error unmarshaling response: %v\nRaw: %s", err, string(body))
+		return ToolCallResponse{}, fmt.Errorf("error unmarshaling response: %v\nRaw: %s", err, string(body))
 	}
 	if len(response.Choices) == 0 || len(response.Choices[0].Message.ToolCalls) == 0 {
-		return ToolCall{}, fmt.Errorf("no tool call found in response")
+		return ToolCallResponse{}, fmt.Errorf("no tool call found in response")
 	}
 	toolCall := response.Choices[0].Message.ToolCalls[0]
 	fmt.Printf("Tool call received: %+v\n", toolCall)
-	var parsed ToolCall
+	var parsed ToolCallResponse
 	err = json.Unmarshal([]byte(toolCall.Function.Arguments), &parsed)
 	if err != nil {
-		return ToolCall{}, fmt.Errorf("error parsing tool args: %v\nArgs: %s", err, toolCall.Function.Arguments)
+		return ToolCallResponse{}, fmt.Errorf("error parsing tool args: %v\nArgs: %s", err, toolCall.Function.Arguments)
 	}
 
 	return parsed, nil

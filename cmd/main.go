@@ -22,18 +22,22 @@ func eventHandler(client *whatsmeow.Client) func(interface{}) {
 	return func(evt interface{}) {
 		switch v := evt.(type) {
 		case *events.Message:
+			message := v.Message.GetConversation()
 			sender := v.Info.Sender
-			fmt.Println("\nMensagem recebida de:\n", sender)
 
-			text := "helloworld"
+			fmt.Println("Received a message!", message)
+
+			response := fmt.Sprintf("You said: %s", message)
+
+			// Use waProto.Message instead of waE2E.Message
 			_, err := client.SendMessage(context.Background(), sender, &waE2E.Message{
-				Conversation: &text,
+				Conversation: &response,
 			})
 
 			if err != nil {
-				fmt.Printf("Erro ao enviar: %v\n", err)
+				fmt.Printf("Error sending message: %v\n", err)
 			} else {
-				fmt.Println("Resposta enviada com sucesso")
+				fmt.Println("Response sent successfully") // Added newline
 			}
 		}
 	}
@@ -75,10 +79,10 @@ func main() {
 		}
 		for evt := range qrChan {
 			if evt.Event == "code" {
+				// Render the QR code here
+				// e.g. qrterminal.GenerateHalfBlock(evt.Code, qrterminal.L, os.Stdout)
+				// or just manually `echo 2@... | qrencode -t ansiutf8` in a terminal
 				fmt.Println("QR code:", evt.Code)
-			} else if evt.Event == "success" {
-				fmt.Println("Login successful, session saved")
-				break // stop waiting for QR, session persisted
 			} else {
 				fmt.Println("Login event:", evt.Event)
 			}

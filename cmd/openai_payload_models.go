@@ -12,7 +12,7 @@ type RequestBody struct {
 	Temperature         float32   `json:"temperature"`
 }
 
-type ToolCall struct {
+type ToolCallResponse struct {
 	ID       string `json:"id"`
 	Type     string `json:"type"`
 	Function struct {
@@ -25,9 +25,9 @@ type ResponseBody struct {
 	ID      string `json:"id"`
 	Choices []struct {
 		Message struct {
-			Role      string     `json:"role"`
-			Content   string     `json:"content"`
-			ToolCalls []ToolCall `json:"tool_calls,omitempty"`
+			Role      string             `json:"role"`
+			Content   string             `json:"content"`
+			ToolCalls []ToolCallResponse `json:"tool_calls,omitempty"`
 		} `json:"message"`
 	} `json:"choices"`
 	Usage struct {
