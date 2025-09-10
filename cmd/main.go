@@ -30,9 +30,8 @@ func eventHandler(client *whatsmeow.Client) func(interface{}) {
 
 			if message != "" {
 				// response := fmt.Sprintf("You said: %s", message)
-				res, _ := callLLM(message)
-
-				fmt.Println(res)
+				parsed, _ := callGroq(message)
+				res := fmt.Sprintf("%+v", parsed)
 
 				userJID := types.JID{
 					User:   sender.User,
