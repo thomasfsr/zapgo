@@ -11,6 +11,7 @@ import (
 	"go.mau.fi/whatsmeow"
 	"go.mau.fi/whatsmeow/proto/waE2E"
 	"go.mau.fi/whatsmeow/store/sqlstore"
+	"go.mau.fi/whatsmeow/types"
 	"go.mau.fi/whatsmeow/types/events"
 	waLog "go.mau.fi/whatsmeow/util/log"
 
@@ -27,17 +28,26 @@ func eventHandler(client *whatsmeow.Client) func(interface{}) {
 
 			fmt.Println("Received a message!", message)
 
-			response := fmt.Sprintf("You said: %s", message)
+			if message != "" {
+				// response := fmt.Sprintf("You said: %s", message)
+				res, _ := callLLM(message)
 
-			// Use waProto.Message instead of waE2E.Message
-			_, err := client.SendMessage(context.Background(), sender, &waE2E.Message{
-				Conversation: &response,
-			})
+				fmt.Println(res)
 
-			if err != nil {
-				fmt.Printf("Error sending message: %v\n", err)
-			} else {
-				fmt.Println("Response sent successfully") // Added newline
+				userJID := types.JID{
+					User:   sender.User,
+					Server: sender.Server,
+				}
+
+				_, err := client.SendMessage(context.Background(), userJID, &waE2E.Message{
+					Conversation: &res,
+				})
+
+				if err != nil {
+					fmt.Printf("Error sending message: %v\n", err)
+				} else {
+					fmt.Println("Response sent successfully") // Added newline
+				}
 			}
 		}
 	}
