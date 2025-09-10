@@ -9,36 +9,6 @@ import (
 	"os"
 )
 
-const UpdateSystemPrompt string = `
-Analise a tarefa fornecida e extraia as seguintes informações:
-
-   1. action: O tipo de ação a ser executada. As opções possíveis são:
-        - add: Adicionar quantidades a um item existente ou criar um novo item.
-        - subtract: Remover quantidades de um item.
-        - discard_all Tudo: Remover todas as quantidades de um item.
-        - rename: Alterar o nome de um item.
-        - change_unit: Alterar a unidade de medida de um item.  
-   2. item_name: O nome do item. Converta para substantivo no singular. Não traduza o nome nem resuma nem omita a marca caso o usuário forneça, apenas converta para singular.
-   Se o usuário passar o nome do item em '' ou "" salve do jeito que ele passar, apenas removendo as ''/"".
-   3. quantity: A quantidade, que pode ser um número inteiro ou decimal. Caso não seja especificado a quantidade atribua = 1.
-   4. unit: A unidade da quantidade (por exemplo, "kg", "un", "m", "ft", "sq ft"). Caso não seja informada, defina como "un".
-   5. category: A categoria a qual o item pertence. Caso não seja mencionado setar como "geral".
-   6. location: O local do item, opcional. Caso não seja fornecido pode ser Nulo.
-   7. description: A descrição do item, opcional. Caso não seja fornecido pode ser Nulo.
-
-Somente para a ação rename, extraia também: 
-   8. old_item_name: O nome atual do item (string ou None se não for informado). 
-   9. new_item_name: O novo nome para o item (string ou None se não for informado).
-
-o Schema dos dados segue:
-    action: Optional[ActionOptions] = Field(description='Action required for the task: add, subtract, discard_all,rename')
-    item_name: str = Field(description='Item da tarefa')
-    quantity: Optional[Union[float, int]] = Field(description='Quantidade')
-    unit: UnitOptions = Field(description='unidade de medida.')
-    old_item_name: Optional[str] | None 
-    new_item_name: Optional[str] | None 
-    category: [str = Field(description='Category of the item') `
-
 type ActionOptions string
 type UnitOptions string
 
@@ -136,6 +106,36 @@ var updateFunctionSchema = map[string]interface{}{
 	},
 	"required": []string{"item_name", "unit"},
 }
+
+const UpdateSystemPrompt string = `
+Analise a tarefa fornecida e extraia as seguintes informações:
+
+   1. action: O tipo de ação a ser executada. As opções possíveis são:
+        - add: Adicionar quantidades a um item existente ou criar um novo item.
+        - subtract: Remover quantidades de um item.
+        - discard_all Tudo: Remover todas as quantidades de um item.
+        - rename: Alterar o nome de um item.
+        - change_unit: Alterar a unidade de medida de um item.  
+   2. item_name: O nome do item. Converta para substantivo no singular. Não traduza o nome nem resuma nem omita a marca caso o usuário forneça, apenas converta para singular.
+   Se o usuário passar o nome do item em '' ou "" salve do jeito que ele passar, apenas removendo as ''/"".
+   3. quantity: A quantidade, que pode ser um número inteiro ou decimal. Caso não seja especificado a quantidade atribua = 1.
+   4. unit: A unidade da quantidade (por exemplo, "kg", "un", "m", "ft", "sq ft"). Caso não seja informada, defina como "un".
+   5. category: A categoria a qual o item pertence. Caso não seja mencionado setar como "geral".
+   6. location: O local do item, opcional. Caso não seja fornecido pode ser Nulo.
+   7. description: A descrição do item, opcional. Caso não seja fornecido pode ser Nulo.
+
+Somente para a ação rename, extraia também: 
+   8. old_item_name: O nome atual do item (string ou None se não for informado). 
+   9. new_item_name: O novo nome para o item (string ou None se não for informado).
+
+o Schema dos dados segue:
+    action: Optional[ActionOptions] = Field(description='Action required for the task: add, subtract, discard_all,rename')
+    item_name: str = Field(description='Item da tarefa')
+    quantity: Optional[Union[float, int]] = Field(description='Quantidade')
+    unit: UnitOptions = Field(description='unidade de medida.')
+    old_item_name: Optional[str] | None 
+    new_item_name: Optional[str] | None 
+    category: [str = Field(description='Category of the item') `
 
 func callGroq(input string) (ToolCall, error) {
 	fmt.Print("\nolá1\n")
